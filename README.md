@@ -1,1 +1,1 @@
-# httpd-with-oauth-proxy
+# must-gather-nginx-with-oauth-proxy
