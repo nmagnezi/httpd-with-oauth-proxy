@@ -4,47 +4,47 @@ items:
 - apiVersion: v1
   kind: ServiceAccount
   metadata:
-    name: proxy
+    name: must-gather-operator
     annotations:
-      serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"proxy"}}'
+      serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"must-gather-operator"}}'
 - apiVersion: v1
   kind: Route
   metadata:
-    name: proxy
+    name: must-gather-operator
   spec:
     to:
       kind: Service
-      name: proxy
+      name: must-gather-operator
     tls:
       termination: Reencrypt
 - apiVersion: v1
   kind: Service
   metadata:
-    name: proxy
+    name: must-gather-operator
     annotations:
-      service.alpha.openshift.io/serving-cert-secret-name: proxy-tls
+      service.alpha.openshift.io/serving-cert-secret-name: must-gather-operator-tls
   spec:
     ports:
-    - name: proxy
+    - name: must-gather-operator
       port: 443
       targetPort: 8443
     selector:
-      app: proxy
+      app: must-gather-operator
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: proxy
+    name: must-gather-operator
   spec:
     replicas: 1
     selector:
       matchLabels:
-        app: proxy
+        app: must-gather-operator
     template:
       metadata:
         labels:
-          app: proxy
+          app: must-gather-operator
       spec:
-        serviceAccountName: proxy
+        serviceAccountName: must-gather-operator
         containers:
         - name: oauth-proxy
           image: openshift/oauth-proxy:latest
@@ -55,19 +55,19 @@ items:
           args:
           - --https-address=:8443
           - --provider=openshift
-          - --openshift-service-account=proxy
+          - --openshift-service-account=must-gather-operator
           - --upstream=http://localhost:8080
           - --tls-cert=/etc/tls/private/tls.crt
           - --tls-key=/etc/tls/private/tls.key
           - --cookie-secret=SECRET
           volumeMounts:
           - mountPath: /etc/tls/private
-            name: proxy-tls
+            name: must-gather-operator-tls
         - name: nginx
           image: bitnami/nginx
           ports:
           - containerPort: 8080     
         volumes:
-        - name: proxy-tls
+        - name: must-gather-operator-tls
           secret:
-            secretName: proxy-tls           
+            secretName: must-gather-operator-tls
