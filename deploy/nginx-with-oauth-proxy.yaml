@@ -1,6 +1,7 @@
 kind: List
 apiVersion: v1
 items:
+# to be dropped already created by operator: https://github.com/masayag/must-gather-operator/blob/master/deploy/service_account.yaml
 - apiVersion: v1
   kind: ServiceAccount
   metadata:
@@ -48,7 +49,7 @@ items:
         containers:
         - name: oauth-proxy
           image: openshift/oauth-proxy:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: 8443
             name: public
@@ -64,6 +65,7 @@ items:
           - mountPath: /etc/tls/private
             name: must-gather-operator-tls
         - name: nginx
+          # Image soucre 
           image: bitnami/nginx
           ports:
           - containerPort: 8080     
