@@ -61,11 +61,13 @@ items:
           - --tls-cert=/etc/tls/private/tls.crt
           - --tls-key=/etc/tls/private/tls.key
           - --cookie-secret=SECRET
+          # Allows access if the user can view the service 'kubelet' in namespace 'kube-system' (administrators only)
+          - --openshift-sar={"namespace":"kube-system","resource":"services","name":"kubelet","verb":"get"}
           volumeMounts:
           - mountPath: /etc/tls/private
             name: must-gather-operator-tls
         - name: nginx
-          # Image soucre 
+          # Image source might change. 
           image: bitnami/nginx
           ports:
           - containerPort: 8080     
