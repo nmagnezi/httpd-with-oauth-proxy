@@ -3,7 +3,7 @@
 This is intended to become a part of the [must-gather-operator](https://github.com/masayag/must-gather-operator).
 
 ## Working assumptions
-1. Use ServiceAccount must-gather-operator as defined [here](https://github.com/masayag/must-gather-operator/blob/master/deploy/service_account.yaml)
+1. Use ServiceAccount must-gather-operator as defined [here](https://github.com/masayag/must-gather-operator/blob/master/deploy/04-service_account.yaml)
 2. [OAuth-proxy](https://github.com/openshift/oauth-proxy) serves as a sidecar container alongside an Nginx container that exposes a downloable zipped report.
 3. Users identify to [OAuth-proxy](https://github.com/openshift/oauth-proxy) before they gain access to Nginx to verify only cluster administrators access the must-gather report.
 * Tested Okay with 'kubeadmin' (Access granted)
